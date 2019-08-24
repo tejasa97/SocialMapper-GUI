@@ -71,7 +71,7 @@ global douban_password
 douban_username = ""
 douban_password = ""
 
-def solve_problem(args):
+def solve_problem(args, gui):
     """ Invokes the social mapper program and provides it with the args from the GUI """
 
     global showbrowser
@@ -191,7 +191,9 @@ def solve_problem(args):
                     continue
             companyid = firstID
             if companyid == 0:
-                print("[WARNING] No valid company ID found in auto, please restart and find your own")
+                messagebox.showwarning("Warning", "No valid company ID found in auto, please restart and find your own")
+                # print("[WARNING] No valid company ID found in auto, please restart and find your own")
+                gui.SUBMIT_btn.config(text='Clear output')
                 sys.exit(1)
         print("[*] Using company ID: %s" % companyid)
 
@@ -211,6 +213,8 @@ def solve_problem(args):
             pages = pages - 1
         if pages == 0:
             print("[!] Try to use quotes in the search name")
+            messagebox.showwarning("Warning", "Try to use quotes in the search name")
+            gui.SUBMIT_btn.config(text='Clear output')
             sys.exit(0)
 
         print("[*] %i Results Found" % data_total)
@@ -311,6 +315,8 @@ def solve_problem(args):
 
     if exit:
         print("Input Error, check options relating to format and input")
+        messagebox.showerror("Input error", "check options relating to format and input")
+        gui.SUBMIT_btn.config(text='Clear output')
         sys.exit(1)
 
     # Pass peoplelist to modules for filling out
@@ -712,7 +718,7 @@ def solve_problem(args):
     # copy images from Social Mapper to output folder
     outputfoldername = "SM-Results/" + args.input.replace("\"","").replace("/","-") + "-social-mapper"
     if args.format != "imagefolder":
-        os.rename('temp-targets',outputfoldername)
+        shutil.move('temp-targets',outputfoldername)
         print("Image folder: " + outputfoldername + "\n")
     #if not os.path.exists('temp-targets'):
     #    shutil.rmtree('temp-targets')
@@ -721,6 +727,8 @@ def solve_problem(args):
     #print datetime.now() - startTime
     #completiontime = datetime.now() - startTime
     print("Task Duration: " + str(datetime.now() - startTime))
+    messagebox.showinfo("Completed", "The program has successfully completed!")
+    gui.SUBMIT_btn.config(text='Clear output')
 
 class GUI:
     def __init__(self, args):
@@ -730,6 +738,7 @@ class GUI:
         self.root.title("Nebula-Eye")
         w,h = self.root.winfo_screenwidth()/2, self.root.winfo_screenheight()
         self.root.geometry('{:0.0f}x{:0.0f}+{:0.0f}+{:0.0f}'.format(w,h,0,0))
+        self.root.resizable(False, False)
 
         # Left Frame
         self.frameLeft = Frame(self.root)
@@ -749,7 +758,7 @@ class GUI:
                 command=self.format_select),
             "csv" : Radiobutton(self.frameLeft, text="CSV", variable=self.format_var, value=2, font=("Montserrat", 10),
                 command=self.format_select),
-            "imagefolder" : Radiobutton(self.frameLeft, text="Image Folder", variable=self.format_var, value=3, font=("Montserrat", 10),
+            "imagefolder" : Radiobutton(self.frameLeft, text="Image folder", variable=self.format_var, value=3, font=("Montserrat", 10),
                 command=self.format_select),
             "social_mapper_html" : Radiobutton(self.frameLeft, text="Social Mapper HTML", variable=self.format_var, value=4, font=("Montserrat", 10),
                 command=self.format_select)
@@ -774,7 +783,9 @@ class GUI:
         self.browse_button = Button(self.frame2, text = "BROWSE", command = self.browse_command)
 
         self.frame3 =  Frame(self.root)
-        self.frame3.pack(side=TOP, fill=BOTH, expand=0)     
+        self.frame3.pack(side=TOP, fill=BOTH, expand=0)
+        self.frame5 =  Frame(self.root)
+        self.frame5.pack(side=TOP, fill=BOTH, expand=0)  
         self.debugText3 = Label(self.frame2,
             justify = CENTER, anchor= 'n', bd=3, relief=RAISED, font=("Open Sans", 18), pady=5)
 
@@ -809,15 +820,15 @@ class GUI:
         onvalue = 1, offvalue = 0, height=1, width = 20)
         self.linkedin = Checkbutton(self.frame3, text = "Linkedin", variable = self.linkedin_var, \
         onvalue = 1, offvalue = 0, height=1, width = 20)
-        self.googleplus = Checkbutton(self.frame3, text = "Googleplus", variable = self.googleplus_var, \
+        # self.googleplus = Checkbutton(self.frame5, text = "Googleplus", variable = self.googleplus_var, \
+        # onvalue = 1, offvalue = 0, height=1, width = 20)
+        self.vkontakte = Checkbutton(self.frame5, text = "Vkontakte", variable = self.vkontakte_var, \
         onvalue = 1, offvalue = 0, height=1, width = 20)
-        self.vkontakte = Checkbutton(self.frame3, text = "Vkontakte", variable = self.vkontakte_var, \
+        self.weibo = Checkbutton(self.frame5, text = "Weibo", variable = self.weibo_var, \
         onvalue = 1, offvalue = 0, height=1, width = 20)
-        self.weibo = Checkbutton(self.frame3, text = "Weibo", variable = self.weibo_var, \
+        self.douban = Checkbutton(self.frame5, text = "Douban", variable = self.douban_var, \
         onvalue = 1, offvalue = 0, height=1, width = 20)
-        self.douban = Checkbutton(self.frame3, text = "Douban", variable = self.douban_var, \
-        onvalue = 1, offvalue = 0, height=1, width = 20)
-        self.all = Checkbutton(self.frame3, text = "all", variable = self.all_var, \
+        self.all = Checkbutton(self.frame5, text = "all", variable = self.all_var, \
         onvalue = 1, offvalue = 0, height=1, width = 20)
 
         self.bottomFrame = Frame(self.root)
@@ -833,7 +844,7 @@ class GUI:
         
         self.root.mainloop()
         # Update the window every 2 secs
-        self.root.after(2000,self.root.update_idletasks)
+        # self.root.after(2000,self.root.update_idletasks)
 
     def send_back_args(self, args):
 
@@ -853,7 +864,7 @@ class GUI:
         args.input = input_
 
         if not len(input_) > 0:
-            print("Input not provided")
+            messagebox.showerror("Error", "Please provide the necessary input")
             return
 
         mode = {
@@ -877,18 +888,20 @@ class GUI:
                 args.ig = True
             if self.linkedin_var.get():
                 args.li = True
-            if self.googleplus_var.get():
-                args.gp = True
             if self.vkontakte_var.get():
                 args.vk = True
             if self.weibo_var.get():
                 args.wb = True
             if self.douban_var.get():
                 args.db = True
-            if self.all_var.get():
-                args.fb = True
 
-        solve_problem(args)
+        social_media_options = [args.fb, args.tw, args.ig, args.li, args.vk, args.wb, args.db, args.a]
+        if not any(social_media_options):
+             messagebox.showerror("Error", "Select atleast one social media platform")
+        
+        t = threading.Thread(target=solve_problem, args=(args, self,))
+        t.daemon=True
+        t.start()
     
     def browse_command(self):
         # For CSV
@@ -914,14 +927,14 @@ class GUI:
         self.debugText3.config(text="Social media platforms")
         self.debugText3.pack(fill=X,side=TOP, pady=(10,0))
 
-        self.facebook.pack(side=LEFT)
-        self.twitter.pack(side=LEFT)
-        self.instagram.pack(side=LEFT)
-        self.linkedin.pack(side=LEFT)
-        self.googleplus.pack(side=LEFT)
-        self.weibo.pack(side=LEFT)
-        self.douban.pack(side=LEFT)
-        self.all.pack(side=LEFT)
+        self.facebook.pack(fill=X, expand=1, side=LEFT, anchor=CENTER)
+        self.twitter.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.instagram.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.linkedin.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.vkontakte.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.weibo.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.douban.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
+        self.all.pack(fill=X,expand=1,side=LEFT, anchor=CENTER)
 
         self.debugText4.config(text="Mode")
         self.debugText4.pack(fill=X,side=TOP, pady=(10,0))
@@ -936,7 +949,7 @@ class GUI:
         # Radio button chosen
         
         if self.format_var.get() == 1:
-            self.debugText2.config(text="Enter the name")
+            self.debugText2.config(text="Enter company name")
             self.debugText2.pack(fill=X,side=TOP, pady=(10,0))
             self.img_path.pack(pady=(0,0), padx=10)
             self.bring_the_rest()
@@ -966,8 +979,12 @@ class GUI:
         """
         Runs the social mapper
         """
+        if self.SUBMIT_btn.cget('text') == 'Clear output':
+            self.output_text.delete("1.0",END)
+            self.SUBMIT_btn.config(text='RUN')
 
-        self.send_back_args(self.args)
+        else:
+            self.send_back_args(self.args)
 
 class RedirectText():
 
