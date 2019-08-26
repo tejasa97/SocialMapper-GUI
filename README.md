@@ -102,7 +102,7 @@ Open social_mapper.py and enter social media credentials into global variables a
 
 5) For Facebook, make sure the language of the account which you have provided credentials for is set to 'English (US)' for the duration of the run. Additionally make sure all of your accounts are working, and can be logged into without requiring 2 factor authentication. 
 
-## Using Social Mapper
+## Using Social Mapper - CLI
 
 Social Mapper is run from the command-line using a mix of required and optional parameters. You can specify options such as input type and which sites to check alongside a number of other parameters which affect speed and accuracy.
 
@@ -160,6 +160,20 @@ python social_mapper.py -f socialmapper -i ./SpiderLabs-social-mapper-linkedin-f
 A quick run (~5min) without facial recognition to generate a CSV full of names, email addresses, profiles and photo links from up to 1000 people pulled out of a LinkedIn company, where the email format is known to be "firstname.lastname":
 python social_mapper.py -f company -i "SpiderLabs" -m accurate -li -e "<first>.<last>@spiderlabs.com"
 ```
+
+## Using Nebula-Eye-GUI
+
+Nebula-Eye is GUI version of social mapper, jut select the required and optional parameters and hit run. You can select options such as input type and which sites to check alongside a number of other parameters which affect speed and accuracy.
+
+~~~
+To run the gui run below commands - no options needs to mention.
+
+python3 Nebula-Eye-GUI.py
+
+Select the required options and hit run.
+
+Check the result and information on output area.
+~~~
 
 ### Troubleshooting
 
