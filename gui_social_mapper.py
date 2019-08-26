@@ -738,7 +738,7 @@ class GUI:
         self.root.title("Nebula-Eye")
         w,h = self.root.winfo_screenwidth()/2, self.root.winfo_screenheight()
         self.root.geometry('{:0.0f}x{:0.0f}+{:0.0f}+{:0.0f}'.format(w,h,0,0))
-        self.root.resizable(False, False)
+        # self.root.resizable(False, False)
 
         # Left Frame
         self.frameLeft = Frame(self.root)
