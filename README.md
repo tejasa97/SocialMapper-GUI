@@ -116,6 +116,9 @@ Select the required options and hit run.
 Check the result and information on output area.
 ~~~
 
+![Nebula-Eye Logo](docs/Nebula-Eye-GUI.jpg?raw=true "Nebula-Eye-GUI Logo")
+
+
 ## Using Social Mapper - CLI
 
 Social Mapper is run from the command-line using a mix of required and optional parameters. You can specify options such as input type and which sites to check alongside a number of other parameters which affect speed and accuracy.
