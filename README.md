@@ -1,4 +1,4 @@
-# Social Mapper
+# Nebula-Eye GUI
 ![alt text](https://img.shields.io/badge/Python-3_only-blue.svg "Python 3 only")
 ![alt text](https://img.shields.io/travis/Greenwolf/social_mapper.svg "Travis build status")
 
@@ -59,7 +59,7 @@ Make sure the new version of Firefox is in the path. If not manually add it.
 
 2) Install the Geckodriver for your operating system and make sure it's in your path, on Mac you can place it in `/usr/local/bin`, on ChromeOS you can place it in `/usr/local/bin`, and on Linux you can place it in `/usr/bin`.
 
-Download the latest version of Geckodriver here:
+Download the latest version of Geckodriver here: (Also one working Geckodriver is included in Repo.)
 
 ```
 https://github.com/mozilla/geckodriver/releases
@@ -72,6 +72,16 @@ On Linux install the following prerequisites:
 sudo apt-get install build-essential cmake
 sudo apt-get install libgtk-3-dev
 sudo apt-get install libboost-all-dev
+```
+If you face any issue while installing Dlib in ubuntu, dlib module is included seperately in repo.
+So install from dlib-19.17.0 directory or download from below link and install.
+Instructions:
+```
+Download “dlib-19.16.tar.bz2” at “https://pypi.org/project/dlib/#files”.
+tar xvf dlib-19.16.tar.bz2
+cd dlib-19.16
+python setup.py install
+python3 setup.py install
 ```
 
 On Linux & macOS finish the install with:
